@@ -436,3 +436,330 @@
         0 0 0 1px rgba(239,68,68,0.35),
         0 14px 32px rgba(239,68,68,0.30);
 }
+
+/* ============================================================
+   SERVER ICON & BANNER & MOTD
+   ============================================================ */
+.mcsmd-server-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.mcsmd-server-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.mcsmd-server-banner {
+    margin-top: 8px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.mcsmd-server-banner img {
+    width: 100%;
+    display: block;
+}
+
+.mcsmd-motd {
+    margin-top: 10px;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   ONLINE PLAYERS % COLOR
+   ============================================================ */
+/* Texto del porcentaje dentro de la línea de jugadores */
+.mcsmd-players .mcsmd-players-percent {
+    font-weight: 600;
+    margin-left: 4px;
+}
+
+/* 0–50% lleno: verde */
+.mcsmd-players .mcsmd-players-percent.mcsmd-percent-low {
+    color: #4caf50 !important;
+}
+
+/* 51–85% lleno: amarillo/naranja */
+.mcsmd-players .mcsmd-players-percent.mcsmd-percent-medium {
+    color: #ffc107 !important;
+}
+
+/* >85% lleno: rojo */
+.mcsmd-players .mcsmd-players-percent.mcsmd-percent-high {
+    color: #f44336 !important;
+}
+
+/* ============================================================
+   PLAYERS LIST SHORTCODE (mcsmd_players)
+   ============================================================ */
+
+.mcsmd-players-title {
+    margin-bottom: 10px;
+}
+
+/* Barra con buscador + orden */
+.mcsmd-player-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px; /* más espacio con los jugadores */
+}
+
+/* Input de búsqueda */
+.mcsmd-card .mcsmd-player-search-input {
+    flex: 1 1 230px;
+    padding: 9px 12px;
+    border-radius: 999px;
+    border: 1px solid #e5e7eb;
+    font-size: 14px;
+    background: #f9fafb;
+    color: #111827;
+    outline: none;
+    box-shadow: 0 1px 2px rgba(15,23,42,0.06);
+}
+
+/* Selector de orden */
+.mcsmd-card .mcsmd-player-sort {
+    flex: 0 0 170px;
+    padding: 9px 12px;
+    border-radius: 999px;
+    border: 1px solid #e5e7eb;
+    font-size: 14px;
+    background: #f9fafb;
+    color: #111827;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Hover / focus suaves */
+.mcsmd-player-search-input:focus,
+.mcsmd-player-sort:focus {
+    border-color: #22c55e;
+    box-shadow:
+        0 0 0 1px rgba(34,197,94,0.25),
+        0 4px 10px rgba(15,23,42,0.15);
+}
+
+/* Dark mode para el buscador y el selector */
+.mcsmd-card.dark .mcsmd-player-search-input,
+.mcsmd-card.dark .mcsmd-player-sort {
+    background: #020617;
+    border-color: #1f2937;
+    color: #e5e7eb;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.55);
+}
+
+.mcsmd-card.dark .mcsmd-player-search-input::placeholder {
+    color: #6b7280;
+}
+
+/* Responsive: que la barra se adapte bien en móvil */
+@media (max-width: 600px) {
+    .mcsmd-player-toolbar {
+        flex-direction: column;
+    }
+
+    .mcsmd-player-sort {
+        flex: 1 1 auto;
+        max-width: 100%;
+    }
+}
+
+/* Botón refresh pequeño para mcsmd_players */
+.mcsmd-refresh-small {
+    width: 30px;
+        height: 30px;
+        background: #1f2937;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        position: relative;
+        transition: background .2s ease;
+}
+
+.mcsmd-refresh-small:hover {
+    background: #374151;
+}
+
+.mcsmd-refresh-small::before {
+    content: "⟳";
+    font-size: 16px;
+    color: #e5e7eb;
+    position: absolute;
+    top: 6px;
+    left: 8px;
+}
+
+/* Dark mode */
+.mcsmd-card.dark .mcsmd-refresh-small {
+    background: #1f2937;
+}
+
+.mcsmd-card.dark .mcsmd-refresh-small:hover {
+    background: #374151;
+}
+
+.mcsmd-card.dark .mcsmd-refresh-small::before {
+    color: #e5e7eb;
+}
+
+/* ============================================================
+   REFRESH JUNTO AL TÍTULO (players shortcode)
+   ============================================================ */
+
+.mcsmd-players-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.mcsmd-players-header .mcsmd-players-title {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* Botón refresh del título */
+.mcsmd-refresh-title {
+    min-width: 26px;
+    height: 26px;
+    padding: 0;
+    border-radius: 999px;
+    border: none;
+    background: #f3f4f6;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #374151;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    transition: background .2s ease, transform .15s ease, box-shadow .15s ease;
+}
+
+.mcsmd-refresh-title:hover {
+    background: #e5e7eb;
+    transform: scale(1.05);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.18);
+}
+
+/* DARK MODE */
+.mcsmd-card.dark .mcsmd-refresh-title {
+    background: #1f2937;
+    color: #e5e7eb;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+}
+
+.mcsmd-card.dark .mcsmd-refresh-title:hover {
+    background: #374151;
+}
+
+
+/* Mensaje de servidor offline (players shortcode) */
+.mcsmd-offline-msg {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 16px;
+    font-weight: 500;
+    padding: 18px 24px;
+    border-radius: 16px;
+    border: 2px solid #ef4444;
+    background: linear-gradient(135deg, #fff1f1, #ffffff);
+    color: #7f1d1d;
+    box-shadow:
+        0 0 0 1px rgba(239,68,68,0.25),
+        0 12px 28px rgba(239,68,68,0.20);
+}
+
+.mcsmd-card.dark .mcsmd-offline-msg {
+    background: #190f0f;
+    border-color: #b91c1c;
+    color: #fca5a5;
+    box-shadow:
+        0 0 0 1px rgba(185,28,28,0.35),
+        0 12px 28px rgba(185,28,28,0.25);
+}
+
+/* ============================================================
+   MENSAJE SIN JUGADORES ONLINE
+   ============================================================ */
+
+.mcsmd-empty-msg {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 18px 24px;          /* sin padding extra a la izquierda */
+    border-radius: 16px;
+    border: 1px dashed #22c55e;
+    background: linear-gradient(135deg, #f0fdf4, #ffffff);
+    color: #14532d;
+    font-size: 15px;
+    font-weight: 500;
+    box-shadow:
+        0 0 0 1px rgba(34,197,94,0.15),
+        0 10px 24px rgba(34,197,94,0.20);
+}
+
+/* dark mode */
+.mcsmd-card.dark .mcsmd-empty-msg {
+    background: #020617;
+    border-color: #15803d;
+    color: #bbf7d0;
+    box-shadow:
+        0 0 0 1px rgba(21,128,61,0.35),
+        0 10px 24px rgba(0,0,0,0.65);
+}
+
+.mcsmd-card.dark .mcsmd-empty-msg::before {
+    background: #22c55e;
+    box-shadow: 0 0 0 4px rgba(34,197,94,0.45);
+}
+
+/* Punto verde para "No players online" */
+.mcsmd-empty-msg .status-dot-green {
+    width: 14px;
+    height: 14px;
+    background: #22c55e;
+    border-radius: 999px;
+    margin-right: 10px;
+    box-shadow: 0 0 0 4px rgba(34,197,94,0.25);
+    animation: mcsmd-status-dot-pulse 3.2s infinite ease-out;
+}
+
+/* Punto rojo para "Server is offline" */
+.mcsmd-offline-msg .status-dot-red {
+    width: 14px;
+    height: 14px;
+    background: #ef4444;
+    border-radius: 999px;
+    margin-right: 10px;
+    box-shadow: 0 0 0 4px rgba(239,68,68,0.35);
+    animation: mcsmd-status-dot-pulse-red 3.5s infinite ease-out;
+}
+
+@keyframes mcsmd-status-dot-pulse-red {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(239,68,68,0.45);
+    }
+    60% {
+        transform: scale(1.15);
+        box-shadow: 0 0 0 8px rgba(239,68,68,0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(239,68,68,0);
+    }
+}

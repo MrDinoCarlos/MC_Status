@@ -54,6 +54,9 @@ class MCSMD_Admin {
 			'player_columns'    => 3,
 			'global_dark_mode'  => 0,
 			'last_version'      => '',
+			'custom_banner_url' => '',
+			'show_port_in_ip'   => 1,
+			'player_count_mode' => 'online_max',
 		);
 
 		$options = get_option( $this->option_name, array() );
@@ -125,6 +128,14 @@ class MCSMD_Admin {
 		);
 
 		add_settings_field(
+        	'show_port_in_ip',
+        	__( 'Show port in IP', 'mcsmd' ),
+        	array( $this, 'field_show_port_in_ip' ),
+        	'mcsmd-settings',
+        	'mcsmd_display_section'
+        );
+
+		add_settings_field(
 			'show_motd',
 			__( 'Show MOTD', 'mcsmd' ),
 			array( $this, 'field_show_motd' ),
@@ -136,6 +147,15 @@ class MCSMD_Admin {
 			'show_banner',
 			__( 'Show server banner', 'mcsmd' ),
 			array( $this, 'field_show_banner' ),
+			'mcsmd-settings',
+			'mcsmd_display_section'
+		);
+
+		// NUEVO: campo para URL personalizada de banner.
+		add_settings_field(
+			'custom_banner_url',
+			__( 'Custom banner URL', 'mcsmd' ),
+			array( $this, 'field_custom_banner_url' ),
 			'mcsmd-settings',
 			'mcsmd_display_section'
 		);
@@ -155,6 +175,14 @@ class MCSMD_Admin {
 			'mcsmd-settings',
 			'mcsmd_display_section'
 		);
+
+		add_settings_field(
+        	'player_count_mode',
+        	__( 'Player count display', 'mcsmd' ),
+        	array( $this, 'field_player_count_mode' ),
+        	'mcsmd-settings',
+        	'mcsmd_display_section'
+        );
 
 		add_settings_field(
 			'player_columns',
@@ -186,6 +214,8 @@ class MCSMD_Admin {
 		$output['player_list_limit']  = isset( $input['player_list_limit'] ) ? intval( $input['player_list_limit'] ) : 10;
 		$output['player_columns']     = isset( $input['player_columns'] ) ? intval( $input['player_columns'] ) : 3;
 		$output['global_dark_mode']   = ! empty( $input['global_dark_mode'] ) ? 1 : 0;
+		$output['custom_banner_url']  = isset( $input['custom_banner_url'] ) ? esc_url_raw( $input['custom_banner_url'] ) : '';
+		$output['show_port_in_ip']    = ! empty( $input['show_port_in_ip'] ) ? 1 : 0;
 
 		if ( $output['server_port'] <= 0 || $output['server_port'] > 65535 ) {
 			$output['server_port'] = 25565;
@@ -204,6 +234,14 @@ class MCSMD_Admin {
 		} elseif ( $output['player_columns'] > 4 ) {
 			$output['player_columns'] = 4;
 		}
+
+        // Modo de conteo de jugadores.
+        $allowed_modes = array( 'online_max', 'online_only', 'online_percent' );
+        if ( isset( $input['player_count_mode'] ) && in_array( $input['player_count_mode'], $allowed_modes, true ) ) {
+        	$output['player_count_mode'] = $input['player_count_mode'];
+        } else {
+        	$output['player_count_mode'] = 'online_max';
+        }
 
 		return $output;
 	}
@@ -285,6 +323,19 @@ class MCSMD_Admin {
 		<?php
 	}
 
+    public function field_show_port_in_ip() {
+    	$settings       = $this->get_settings();
+    	$show_port_in_ip = ! empty( $settings['show_port_in_ip'] ) ? 1 : 0;
+    	?>
+    	<label>
+    		<input type="checkbox"
+    			   name="<?php echo esc_attr( $this->option_name ); ?>[show_port_in_ip]"
+    			   value="1" <?php checked( $show_port_in_ip, 1 ); ?> />
+    		<?php esc_html_e( 'Include the server port when displaying the IP (e.g. play.example.com:25565).', 'mcsmd' ); ?>
+    	</label>
+    	<?php
+    }
+
 	public function field_show_motd() {
 		$settings  = $this->get_settings();
 		$show_motd = ! empty( $settings['show_motd'] ) ? 1 : 0;
@@ -306,8 +357,26 @@ class MCSMD_Admin {
 			<input type="checkbox"
 				   name="<?php echo esc_attr( $this->option_name ); ?>[show_banner]"
 				   value="1" <?php checked( $show_banner, 1 ); ?> />
-			<?php esc_html_e( 'Show the server banner image returned by the status API.', 'mcsmd' ); ?>
+			<?php esc_html_e( 'Show the server banner image returned by the status API or the custom banner URL.', 'mcsmd' ); ?>
 		</label>
+		<?php
+	}
+
+	/**
+	 * NUEVO: campo para URL de banner personalizado
+	 */
+	public function field_custom_banner_url() {
+		$settings          = $this->get_settings();
+		$custom_banner_url = isset( $settings['custom_banner_url'] ) ? $settings['custom_banner_url'] : '';
+		?>
+		<input type="url"
+			   name="<?php echo esc_attr( $this->option_name ); ?>[custom_banner_url]"
+			   value="<?php echo esc_attr( $custom_banner_url ); ?>"
+			   class="regular-text"
+			   placeholder="https://example.com/mi-banner.gif" />
+		<p class="description">
+			<?php esc_html_e( 'Optional. If set, this image URL will be used as the banner (for example, a banner from a server list). Leave empty to use the generated banner from mcsrvstat.us.', 'mcsmd' ); ?>
+		</p>
 		<?php
 	}
 
@@ -339,6 +408,28 @@ class MCSMD_Admin {
 		</p>
 		<?php
 	}
+
+    public function field_player_count_mode() {
+    	$settings          = $this->get_settings();
+    	$player_count_mode = isset( $settings['player_count_mode'] ) ? $settings['player_count_mode'] : 'online_max';
+    	?>
+    	<select name="<?php echo esc_attr( $this->option_name ); ?>[player_count_mode]">
+    		<option value="online_max" <?php selected( $player_count_mode, 'online_max' ); ?>>
+    			<?php esc_html_e( 'Show “online / max” (e.g. 294/500)', 'mcsmd' ); ?>
+    		</option>
+    		<option value="online_only" <?php selected( $player_count_mode, 'online_only' ); ?>>
+    			<?php esc_html_e( 'Show only online players (e.g. 294)', 'mcsmd' ); ?>
+    		</option>
+    		<option value="online_percent" <?php selected( $player_count_mode, 'online_percent' ); ?>>
+    			<?php esc_html_e( 'Show online players with percent (e.g. 294 (59%))', 'mcsmd' ); ?>
+    		</option>
+    	</select>
+    	<p class="description">
+    		<?php esc_html_e( 'Choose how the Players line is displayed in the status card header.', 'mcsmd' ); ?>
+    	</p>
+    	<?php
+    }
+
 
 	public function field_player_columns() {
 		$settings       = $this->get_settings();
@@ -400,24 +491,47 @@ class MCSMD_Admin {
 	}
 
 	public function render_settings_page() {
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return;
-		}
-		?>
-		<div class="wrap">
-			<h1><?php esc_html_e( 'MC Status by MrDino', 'mcsmd' ); ?></h1>
+        if ( ! current_user_can( 'manage_options' ) ) {
+            return;
+        }
+        ?>
+        <div class="wrap">
+            <h1><?php esc_html_e( 'MC Status by MrDino', 'mcsmd' ); ?></h1>
 
-			<form method="post" action="options.php">
-				<?php
-				settings_fields( $this->option_group );
-				do_settings_sections( 'mcsmd-settings' );
-				submit_button( __( 'Save changes', 'mcsmd' ) );
-				?>
-			</form>
+            <form method="post" action="options.php">
+                <?php
+                settings_fields( $this->option_group );
+                do_settings_sections( 'mcsmd-settings' );
+                submit_button( __( 'Save changes', 'mcsmd' ) );
+                ?>
+            </form>
 
-			<h2><?php esc_html_e( 'How to use', 'mcsmd' ); ?></h2>
-			<p><?php esc_html_e( 'Use the shortcode [mcsmd_status] in any page or post to display the Minecraft server status card.', 'mcsmd' ); ?></p>
-		</div>
-		<?php
-	}
+            <h2><?php esc_html_e( 'How to use', 'mcsmd' ); ?></h2>
+
+            <p><?php esc_html_e( 'After saving your server settings above, you can use the following shortcodes in any page or post:', 'mcsmd' ); ?></p>
+
+            <ul>
+                <li>
+                    <code>[mcsmd_status]</code>
+                    – <?php esc_html_e( 'shows the main Minecraft server status card (IP, version, MOTD, banner, players, ping, etc.).', 'mcsmd' ); ?>
+                </li>
+                <li>
+                    <code>[mcsmd_players]</code>
+                    – <?php esc_html_e( 'shows only the online players list, with search box and sorting options.', 'mcsmd' ); ?>
+                </li>
+            </ul>
+
+            <h3><?php esc_html_e( 'Quick start', 'mcsmd' ); ?></h3>
+            <ol>
+                <li><?php esc_html_e( 'Enter your Minecraft server address and port in the “Basic server settings” section above and save the changes.', 'mcsmd' ); ?></li>
+                <li><?php esc_html_e( 'Optionally adjust the display options (banner, MOTD, dark mode, player list, etc.).', 'mcsmd' ); ?></li>
+                <li><?php esc_html_e( 'Create or edit a page, paste the shortcode you want to use and publish the page.', 'mcsmd' ); ?></li>
+            </ol>
+
+            <p>
+                <?php esc_html_e( 'Tip: the status and players cards auto-refresh in the background, so visitors will see updated information without reloading the whole page.', 'mcsmd' ); ?>
+            </p>
+        </div>
+        <?php
+    }
 }
