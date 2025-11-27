@@ -27,8 +27,8 @@ class MCSMD_Admin {
 
 	public function add_settings_page() {
 		add_options_page(
-			__( 'MC Status by MrDino', 'mcsmd' ),
-			__( 'MC Status by MrDino', 'mcsmd' ),
+			__( 'Server Status for MC by MrDino', 'mcsmd' ),
+			__( 'Server Status for MC by MrDino', 'mcsmd' ),
 			'manage_options',
 			'mcsmd-settings',
 			array( $this, 'render_settings_page' )
@@ -496,7 +496,7 @@ class MCSMD_Admin {
         }
         ?>
         <div class="wrap">
-            <h1><?php esc_html_e( 'MC Status by MrDino', 'mcsmd' ); ?></h1>
+            <h1><?php esc_html_e( 'Server Status for MC by MrDino', 'mcsmd' ); ?></h1>
 
             <form method="post" action="options.php">
                 <?php

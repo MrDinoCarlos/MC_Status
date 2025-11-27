@@ -219,7 +219,7 @@ class MCSMD_Players_List {
 					<?php
 					echo wp_kses_post(
 						esc_html__( 'Powered by', 'mcsmd' ) .
-						' <a href="https://mrdino.es" target="_blank" rel="noopener">MC Status by MrDino</a>'
+						' <a href="https://mrdino.es" target="_blank" rel="noopener">Server Status for MC by MrDino</a>'
 					);
 					?>
 				</div>
@@ -284,7 +284,7 @@ class MCSMD_Players_List {
 					<?php
 					echo wp_kses_post(
 						esc_html__( 'Powered by', 'mcsmd' ) .
-						' <a href="https://mrdino.es" target="_blank" rel="noopener">MC Status by MrDino</a>'
+						' <a href="https://mrdino.es" target="_blank" rel="noopener">Server Status for MC by MrDino</a>'
 					);
 					?>
 				</div>
@@ -354,7 +354,7 @@ class MCSMD_Players_List {
 				<?php
 				echo wp_kses_post(
 					esc_html__( 'Powered by', 'mcsmd' ) .
-					' <a href="https://mrdino.es" target="_blank" rel="noopener">MC Status by MrDino</a>'
+					' <a href="https://mrdino.es" target="_blank" rel="noopener">Server Status for MC by MrDino</a>'
 				);
 				?>
 			</div>
