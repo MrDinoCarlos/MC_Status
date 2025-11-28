@@ -65,3 +65,4 @@ function mcsmd_init_plugin() {
 	}
 }
 add_action( 'init', 'mcsmd_init_plugin' );
+

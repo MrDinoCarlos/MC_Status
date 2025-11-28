@@ -650,3 +650,4 @@ class MCSMD_Frontend {
 		wp_die();
 	}
 }
+

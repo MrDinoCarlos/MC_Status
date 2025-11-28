@@ -447,3 +447,4 @@ class MCSMD_Players_List {
 		wp_die();
 	}
 }
+

@@ -66,3 +66,4 @@ Fixed both status card and players list to display the credit only when the new 
 Fixed full compliance with WordPress.org guidelines regarding attribution and front-facing links.
 Changed the settings page to include the new credit toggle under Display options (disabled by default).
 
+
