@@ -27,8 +27,8 @@ class MCSMD_Admin {
 
 	public function add_settings_page() {
 		add_options_page(
-			__( 'Server Status for MC by MrDino', 'mcsmd' ),
-			__( 'Server Status for MC by MrDino', 'mcsmd' ),
+			__( 'Server Status for MC by MrDino', 'server-status-for-mc-by-mrdino' ),
+			__( 'Server Status for MC by MrDino', 'server-status-for-mc-by-mrdino' ),
 			'manage_options',
 			'mcsmd-settings',
 			array( $this, 'render_settings_page' )
@@ -57,6 +57,7 @@ class MCSMD_Admin {
 			'custom_banner_url' => '',
 			'show_port_in_ip'   => 1,
 			'player_count_mode' => 'online_max',
+			'show_credit'       => 0,
 		);
 
 		$options = get_option( $this->option_name, array() );
@@ -74,14 +75,14 @@ class MCSMD_Admin {
 		// Main section.
 		add_settings_section(
 			'mcsmd_main_section',
-			__( 'Basic server settings', 'mcsmd' ),
+			__( 'Basic server settings', 'server-status-for-mc-by-mrdino' ),
 			'__return_false',
 			'mcsmd-settings'
 		);
 
 		add_settings_field(
 			'server_address',
-			__( 'Server address', 'mcsmd' ),
+			__( 'Server address', 'server-status-for-mc-by-mrdino' ),
 			array( $this, 'field_server_address' ),
 			'mcsmd-settings',
 			'mcsmd_main_section'
@@ -89,7 +90,7 @@ class MCSMD_Admin {
 
 		add_settings_field(
 			'server_port',
-			__( 'Server port', 'mcsmd' ),
+			__( 'Server port', 'server-status-for-mc-by-mrdino' ),
 			array( $this, 'field_server_port' ),
 			'mcsmd-settings',
 			'mcsmd_main_section'
@@ -97,7 +98,7 @@ class MCSMD_Admin {
 
 		add_settings_field(
 			'cache_seconds',
-			__( 'Status cache (seconds)', 'mcsmd' ),
+			__( 'Status cache (seconds)', 'server-status-for-mc-by-mrdino' ),
 			array( $this, 'field_cache_seconds' ),
 			'mcsmd-settings',
 			'mcsmd_main_section'
@@ -106,14 +107,22 @@ class MCSMD_Admin {
 		// Display section.
 		add_settings_section(
 			'mcsmd_display_section',
-			__( 'Display options', 'mcsmd' ),
+			__( 'Display options', 'server-status-for-mc-by-mrdino' ),
 			'__return_false',
 			'mcsmd-settings'
 		);
 
 		add_settings_field(
+        	'show_credit',
+        	__( 'Show credit link', 'server-status-for-mc-by-mrdino' ),
+        	array( $this, 'field_show_credit' ),
+        	'mcsmd-settings',
+        	'mcsmd_display_section'
+        );
+
+		add_settings_field(
 			'custom_name',
-			__( 'Custom server name', 'mcsmd' ),
+			__( 'Custom server name', 'server-status-for-mc-by-mrdino' ),
 			array( $this, 'field_custom_name' ),
 			'mcsmd-settings',
 			'mcsmd_display_section'
@@ -121,7 +130,7 @@ class MCSMD_Admin {
 
 		add_settings_field(
 			'show_ip',
-			__( 'Show IP / address', 'mcsmd' ),
+			__( 'Show IP / address', 'server-status-for-mc-by-mrdino' ),
 			array( $this, 'field_show_ip' ),
 			'mcsmd-settings',
 			'mcsmd_display_section'
@@ -129,7 +138,7 @@ class MCSMD_Admin {
 
 		add_settings_field(
         	'show_port_in_ip',
-        	__( 'Show port in IP', 'mcsmd' ),
+        	__( 'Show port in IP', 'server-status-for-mc-by-mrdino' ),
         	array( $this, 'field_show_port_in_ip' ),
         	'mcsmd-settings',
         	'mcsmd_display_section'
@@ -137,7 +146,7 @@ class MCSMD_Admin {
 
 		add_settings_field(
 			'show_motd',
-			__( 'Show MOTD', 'mcsmd' ),
+			__( 'Show MOTD', 'server-status-for-mc-by-mrdino' ),
 			array( $this, 'field_show_motd' ),
 			'mcsmd-settings',
 			'mcsmd_display_section'
@@ -145,7 +154,7 @@ class MCSMD_Admin {
 
 		add_settings_field(
 			'show_banner',
-			__( 'Show server banner', 'mcsmd' ),
+			__( 'Show server banner', 'server-status-for-mc-by-mrdino' ),
 			array( $this, 'field_show_banner' ),
 			'mcsmd-settings',
 			'mcsmd_display_section'
@@ -154,7 +163,7 @@ class MCSMD_Admin {
 		// NUEVO: campo para URL personalizada de banner.
 		add_settings_field(
 			'custom_banner_url',
-			__( 'Custom banner URL', 'mcsmd' ),
+			__( 'Custom banner URL', 'server-status-for-mc-by-mrdino' ),
 			array( $this, 'field_custom_banner_url' ),
 			'mcsmd-settings',
 			'mcsmd_display_section'
@@ -162,7 +171,7 @@ class MCSMD_Admin {
 
 		add_settings_field(
 			'show_player_list',
-			__( 'Show player list (if available)', 'mcsmd' ),
+			__( 'Show player list (if available)', 'server-status-for-mc-by-mrdino' ),
 			array( $this, 'field_show_player_list' ),
 			'mcsmd-settings',
 			'mcsmd_display_section'
@@ -170,7 +179,7 @@ class MCSMD_Admin {
 
 		add_settings_field(
 			'player_list_limit',
-			__( 'Max players to show in list', 'mcsmd' ),
+			__( 'Max players to show in list', 'server-status-for-mc-by-mrdino' ),
 			array( $this, 'field_player_list_limit' ),
 			'mcsmd-settings',
 			'mcsmd_display_section'
@@ -178,7 +187,7 @@ class MCSMD_Admin {
 
 		add_settings_field(
         	'player_count_mode',
-        	__( 'Player count display', 'mcsmd' ),
+        	__( 'Player count display', 'server-status-for-mc-by-mrdino' ),
         	array( $this, 'field_player_count_mode' ),
         	'mcsmd-settings',
         	'mcsmd_display_section'
@@ -186,7 +195,7 @@ class MCSMD_Admin {
 
 		add_settings_field(
 			'player_columns',
-			__( 'Player cards per row', 'mcsmd' ),
+			__( 'Player cards per row', 'server-status-for-mc-by-mrdino' ),
 			array( $this, 'field_player_columns' ),
 			'mcsmd-settings',
 			'mcsmd_display_section'
@@ -194,7 +203,7 @@ class MCSMD_Admin {
 
 		add_settings_field(
 			'global_dark_mode',
-			__( 'Enable dark mode (global)', 'mcsmd' ),
+			__( 'Enable dark mode (global)', 'server-status-for-mc-by-mrdino' ),
 			array( $this, 'field_global_dark_mode' ),
 			'mcsmd-settings',
 			'mcsmd_display_section'
@@ -216,6 +225,7 @@ class MCSMD_Admin {
 		$output['global_dark_mode']   = ! empty( $input['global_dark_mode'] ) ? 1 : 0;
 		$output['custom_banner_url']  = isset( $input['custom_banner_url'] ) ? esc_url_raw( $input['custom_banner_url'] ) : '';
 		$output['show_port_in_ip']    = ! empty( $input['show_port_in_ip'] ) ? 1 : 0;
+		$output['show_credit']        = ! empty( $input['show_credit'] ) ? 1 : 0;
 
 		if ( $output['server_port'] <= 0 || $output['server_port'] > 65535 ) {
 			$output['server_port'] = 25565;
@@ -258,7 +268,7 @@ class MCSMD_Admin {
 			   class="regular-text"
 			   placeholder="play.mrdino.es" />
 		<p class="description">
-			<?php esc_html_e( 'Minecraft server IP or hostname. Do not include the port here.', 'mcsmd' ); ?>
+			<?php esc_html_e( 'Minecraft server IP or hostname. Do not include the port here.', 'server-status-for-mc-by-mrdino' ); ?>
 		</p>
 		<?php
 	}
@@ -274,7 +284,7 @@ class MCSMD_Admin {
 			   min="1"
 			   max="65535" />
 		<p class="description">
-			<?php esc_html_e( 'Default Minecraft port is 25565.', 'mcsmd' ); ?>
+			<?php esc_html_e( 'Default Minecraft port is 25565.', 'server-status-for-mc-by-mrdino' ); ?>
 		</p>
 		<?php
 	}
@@ -290,7 +300,7 @@ class MCSMD_Admin {
 			   min="0"
 			   max="600" />
 		<p class="description">
-			<?php esc_html_e( 'How long the status response should be cached. Set to 0 for no caching.', 'mcsmd' ); ?>
+			<?php esc_html_e( 'How long the status response should be cached. Set to 0 for no caching.', 'server-status-for-mc-by-mrdino' ); ?>
 		</p>
 		<?php
 	}
@@ -303,9 +313,9 @@ class MCSMD_Admin {
 			   name="<?php echo esc_attr( $this->option_name ); ?>[custom_name]"
 			   value="<?php echo esc_attr( $custom_name ); ?>"
 			   class="regular-text"
-			   placeholder="<?php esc_attr_e( 'My Minecraft Server', 'mcsmd' ); ?>" />
+			   placeholder="<?php esc_attr_e( 'My Minecraft Server', 'server-status-for-mc-by-mrdino' ); ?>" />
 		<p class="description">
-			<?php esc_html_e( 'Optional custom label to show instead of the raw server address.', 'mcsmd' ); ?>
+			<?php esc_html_e( 'Optional custom label to show instead of the raw server address.', 'server-status-for-mc-by-mrdino' ); ?>
 		</p>
 		<?php
 	}
@@ -318,10 +328,26 @@ class MCSMD_Admin {
 			<input type="checkbox"
 				   name="<?php echo esc_attr( $this->option_name ); ?>[show_ip]"
 				   value="1" <?php checked( $show_ip, 1 ); ?> />
-			<?php esc_html_e( 'Display the server address under the title.', 'mcsmd' ); ?>
+			<?php esc_html_e( 'Display the server address under the title.', 'server-status-for-mc-by-mrdino' ); ?>
 		</label>
 		<?php
 	}
+
+    public function field_show_credit() {
+    	$settings     = $this->get_settings();
+    	$show_credit  = ! empty( $settings['show_credit'] ) ? 1 : 0;
+    	?>
+    	<label>
+    		<input type="checkbox"
+    			   name="<?php echo esc_attr( $this->option_name ); ?>[show_credit]"
+    			   value="1" <?php checked( $show_credit, 1 ); ?> />
+    		<?php esc_html_e( 'Display a small “Powered by Server Status for MC by MrDino” link in the status cards.', 'server-status-for-mc-by-mrdino' ); ?>
+    	</label>
+    	<p class="description">
+    		<?php esc_html_e( 'This is completely optional and disabled by default.', 'server-status-for-mc-by-mrdino' ); ?>
+    	</p>
+    	<?php
+    }
 
     public function field_show_port_in_ip() {
     	$settings       = $this->get_settings();
@@ -331,7 +357,7 @@ class MCSMD_Admin {
     		<input type="checkbox"
     			   name="<?php echo esc_attr( $this->option_name ); ?>[show_port_in_ip]"
     			   value="1" <?php checked( $show_port_in_ip, 1 ); ?> />
-    		<?php esc_html_e( 'Include the server port when displaying the IP (e.g. play.example.com:25565).', 'mcsmd' ); ?>
+    		<?php esc_html_e( 'Include the server port when displaying the IP (e.g. play.example.com:25565).', 'server-status-for-mc-by-mrdino' ); ?>
     	</label>
     	<?php
     }
@@ -344,7 +370,7 @@ class MCSMD_Admin {
 			<input type="checkbox"
 				   name="<?php echo esc_attr( $this->option_name ); ?>[show_motd]"
 				   value="1" <?php checked( $show_motd, 1 ); ?> />
-			<?php esc_html_e( 'Show the MOTD (message of the day) if provided.', 'mcsmd' ); ?>
+			<?php esc_html_e( 'Show the MOTD (message of the day) if provided.', 'server-status-for-mc-by-mrdino' ); ?>
 		</label>
 		<?php
 	}
@@ -357,7 +383,7 @@ class MCSMD_Admin {
 			<input type="checkbox"
 				   name="<?php echo esc_attr( $this->option_name ); ?>[show_banner]"
 				   value="1" <?php checked( $show_banner, 1 ); ?> />
-			<?php esc_html_e( 'Show the server banner image returned by the status API or the custom banner URL.', 'mcsmd' ); ?>
+			<?php esc_html_e( 'Show the server banner image returned by the status API or the custom banner URL.', 'server-status-for-mc-by-mrdino' ); ?>
 		</label>
 		<?php
 	}
@@ -375,8 +401,8 @@ class MCSMD_Admin {
 			   class="regular-text"
 			   placeholder="https://example.com/mi-banner.gif" />
 		<p class="description">
-			<?php esc_html_e( 'Optional. If set, this image URL will be used as the banner (for example, a banner from a server list). Leave empty to use the generated banner from mcsrvstat.us.', 'mcsmd' ); ?>
-		</p>
+        	<?php esc_html_e( 'Optional. If set, this image URL will be used as the banner (for example, a banner from a server list). Leave empty to use the generated banner from mcsrvstat.us.', 'server-status-for-mc-by-mrdino' ); ?>
+        </p>
 		<?php
 	}
 
@@ -388,7 +414,7 @@ class MCSMD_Admin {
 			<input type="checkbox"
 				   name="<?php echo esc_attr( $this->option_name ); ?>[show_player_list]"
 				   value="1" <?php checked( $show_player_list, 1 ); ?> />
-			<?php esc_html_e( 'Try to show player list if provided by the status API.', 'mcsmd' ); ?>
+			<?php esc_html_e( 'Try to show player list if provided by the status API.', 'server-status-for-mc-by-mrdino' ); ?>
 		</label>
 		<?php
 	}
@@ -404,7 +430,7 @@ class MCSMD_Admin {
 			   min="1"
 			   max="200" />
 		<p class="description">
-			<?php esc_html_e( 'Maximum number of player entries to display. Extra players will be collapsed as “+ X more”.', 'mcsmd' ); ?>
+			<?php esc_html_e( 'Maximum number of player entries to display. Extra players will be collapsed as “+ X more”.', 'server-status-for-mc-by-mrdino' ); ?>
 		</p>
 		<?php
 	}
@@ -415,17 +441,17 @@ class MCSMD_Admin {
     	?>
     	<select name="<?php echo esc_attr( $this->option_name ); ?>[player_count_mode]">
     		<option value="online_max" <?php selected( $player_count_mode, 'online_max' ); ?>>
-    			<?php esc_html_e( 'Show “online / max” (e.g. 294/500)', 'mcsmd' ); ?>
+    			<?php esc_html_e( 'Show “online / max” (e.g. 294/500)', 'server-status-for-mc-by-mrdino' ); ?>
     		</option>
     		<option value="online_only" <?php selected( $player_count_mode, 'online_only' ); ?>>
-    			<?php esc_html_e( 'Show only online players (e.g. 294)', 'mcsmd' ); ?>
+    			<?php esc_html_e( 'Show only online players (e.g. 294)', 'server-status-for-mc-by-mrdino' ); ?>
     		</option>
     		<option value="online_percent" <?php selected( $player_count_mode, 'online_percent' ); ?>>
-    			<?php esc_html_e( 'Show online players with percent (e.g. 294 (59%))', 'mcsmd' ); ?>
+    			<?php esc_html_e( 'Show online players with percent (e.g. 294 (59%))', 'server-status-for-mc-by-mrdino' ); ?>
     		</option>
     	</select>
     	<p class="description">
-    		<?php esc_html_e( 'Choose how the Players line is displayed in the status card header.', 'mcsmd' ); ?>
+    		<?php esc_html_e( 'Choose how the Players line is displayed in the status card header.', 'server-status-for-mc-by-mrdino' ); ?>
     	</p>
     	<?php
     }
@@ -443,13 +469,13 @@ class MCSMD_Admin {
 				<option value="<?php echo esc_attr( $i ); ?>" <?php selected( $player_columns, $i ); ?>>
 					<?php
 					/* translators: %d: number of columns */
-					echo esc_html( sprintf( __( '%d columns', 'mcsmd' ), $i ) );
+					echo esc_html( sprintf( __( '%d columns', 'server-status-for-mc-by-mrdino' ), $i ) );
 					?>
 				</option>
 			<?php endfor; ?>
 		</select>
 		<p class="description">
-			<?php esc_html_e( 'How many player cards should be displayed per row in the list.', 'mcsmd' ); ?>
+			<?php esc_html_e( 'How many player cards should be displayed per row in the list.', 'server-status-for-mc-by-mrdino' ); ?>
 		</p>
 		<?php
 	}
@@ -462,7 +488,7 @@ class MCSMD_Admin {
 			<input type="checkbox"
 				   name="<?php echo esc_attr( $this->option_name ); ?>[global_dark_mode]"
 				   value="1" <?php checked( $global_dark_mode, 1 ); ?> />
-			<?php esc_html_e( 'Force dark mode for all visitors.', 'mcsmd' ); ?>
+			<?php esc_html_e( 'Force dark mode for all visitors.', 'server-status-for-mc-by-mrdino' ); ?>
 		</label>
 		<?php
 	}
@@ -479,11 +505,11 @@ class MCSMD_Admin {
 		?>
 		<div class="notice notice-warning">
 			<p>
-				<strong><?php esc_html_e( 'MC Status – Important Notice:', 'mcsmd' ); ?></strong><br />
+				<strong><?php esc_html_e( 'MC Status – Important Notice:', 'server-status-for-mc-by-mrdino' ); ?></strong><br />
 				<?php
 				echo wp_kses_post(
-					__( 'If you are using only the WordPress plugin (without the Minecraft plugin installed on your server), server status updates may take up to <strong>1 minute</strong> to appear, because they depend on the public API <code>mcsrvstat.us</code> instead of a direct connection to your Minecraft server.', 'mcsmd' )
-				);
+                	__( 'If you are using only the WordPress plugin (without the Minecraft plugin installed on your server), server status updates may take up to <strong>1 minute</strong> to appear, because they depend on the public API <code>mcsrvstat.us</code> instead of a direct connection to your Minecraft server.', 'server-status-for-mc-by-mrdino' )
+                );
 				?>
 			</p>
 		</div>
@@ -496,40 +522,40 @@ class MCSMD_Admin {
         }
         ?>
         <div class="wrap">
-            <h1><?php esc_html_e( 'Server Status for MC by MrDino', 'mcsmd' ); ?></h1>
+            <h1><?php esc_html_e( 'Server Status for MC by MrDino', 'server-status-for-mc-by-mrdino' ); ?></h1>
 
             <form method="post" action="options.php">
                 <?php
                 settings_fields( $this->option_group );
                 do_settings_sections( 'mcsmd-settings' );
-                submit_button( __( 'Save changes', 'mcsmd' ) );
+                submit_button( __( 'Save changes', 'server-status-for-mc-by-mrdino' ) );
                 ?>
             </form>
 
-            <h2><?php esc_html_e( 'How to use', 'mcsmd' ); ?></h2>
+            <h2><?php esc_html_e( 'How to use', 'server-status-for-mc-by-mrdino' ); ?></h2>
 
-            <p><?php esc_html_e( 'After saving your server settings above, you can use the following shortcodes in any page or post:', 'mcsmd' ); ?></p>
+            <p><?php esc_html_e( 'After saving your server settings above, you can use the following shortcodes in any page or post:', 'server-status-for-mc-by-mrdino' ); ?></p>
 
             <ul>
                 <li>
                     <code>[mcsmd_status]</code>
-                    – <?php esc_html_e( 'shows the main Minecraft server status card (IP, version, MOTD, banner, players, ping, etc.).', 'mcsmd' ); ?>
+                    – <?php esc_html_e( 'shows the main Minecraft server status card (IP, version, MOTD, banner, players, ping, etc.).', 'server-status-for-mc-by-mrdino' ); ?>
                 </li>
                 <li>
                     <code>[mcsmd_players]</code>
-                    – <?php esc_html_e( 'shows only the online players list, with search box and sorting options.', 'mcsmd' ); ?>
+                    – <?php esc_html_e( 'shows only the online players list, with search box and sorting options.', 'server-status-for-mc-by-mrdino' ); ?>
                 </li>
             </ul>
 
-            <h3><?php esc_html_e( 'Quick start', 'mcsmd' ); ?></h3>
+            <h3><?php esc_html_e( 'Quick start', 'server-status-for-mc-by-mrdino' ); ?></h3>
             <ol>
-                <li><?php esc_html_e( 'Enter your Minecraft server address and port in the “Basic server settings” section above and save the changes.', 'mcsmd' ); ?></li>
-                <li><?php esc_html_e( 'Optionally adjust the display options (banner, MOTD, dark mode, player list, etc.).', 'mcsmd' ); ?></li>
-                <li><?php esc_html_e( 'Create or edit a page, paste the shortcode you want to use and publish the page.', 'mcsmd' ); ?></li>
+                <li><?php esc_html_e( 'Enter your Minecraft server address and port in the “Basic server settings” section above and save the changes.', 'server-status-for-mc-by-mrdino' ); ?></li>
+                <li><?php esc_html_e( 'Optionally adjust the display options (banner, MOTD, dark mode, player list, etc.).', 'server-status-for-mc-by-mrdino' ); ?></li>
+                <li><?php esc_html_e( 'Create or edit a page, paste the shortcode you want to use and publish the page.', 'server-status-for-mc-by-mrdino' ); ?></li>
             </ol>
 
             <p>
-                <?php esc_html_e( 'Tip: the status and players cards auto-refresh in the background, so visitors will see updated information without reloading the whole page.', 'mcsmd' ); ?>
+                <?php esc_html_e( 'Tip: the status and players cards auto-refresh in the background, so visitors will see updated information without reloading the whole page.', 'server-status-for-mc-by-mrdino' ); ?>
             </p>
         </div>
         <?php

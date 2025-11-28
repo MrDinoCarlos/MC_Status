@@ -33,6 +33,7 @@ class MCSMD_Players_List {
 			'player_columns'        => 3,
 			'global_dark_mode'      => 0,
 			'players_cache_seconds' => 5,
+			'show_credit'           => 0,
 		);
 
 		$options = get_option( $this->option_name, array() );
@@ -187,8 +188,8 @@ class MCSMD_Players_List {
 
 		if ( empty( $settings['server_address'] ) ) {
 			return '<div class="mcsmd-card"><p>' .
-				esc_html__( 'Please configure your Minecraft server address in the MC Status settings page.', 'mcsmd' ) .
-				'</p></div>';
+            	esc_html__( 'Please configure your Minecraft server address in the MC Status settings page.', 'server-status-for-mc-by-mrdino' ) .
+            	'</p></div>';
 		}
 
 		$status = $this->fetch_status(
@@ -213,16 +214,18 @@ class MCSMD_Players_List {
 			     data-mcsmd-card="players">
 				<div class="mcsmd-offline-msg">
 					<span class="status-dot-red"></span>
-					<?php esc_html_e( 'Server is offline – no player list available.', 'mcsmd' ); ?>
+					<?php esc_html_e( 'Server is offline – no player list available.', 'server-status-for-mc-by-mrdino' ); ?>
 				</div>
-				<div class="mcsmd-footer">
-					<?php
-					echo wp_kses_post(
-						esc_html__( 'Powered by', 'mcsmd' ) .
-						' <a href="https://mrdino.es" target="_blank" rel="noopener">Server Status for MC by MrDino</a>'
-					);
-					?>
-				</div>
+				<?php if ( ! empty( $settings['show_credit'] ) ) : ?>
+                	<div class="mcsmd-footer">
+                		<?php
+                		echo wp_kses_post(
+                			esc_html__( 'Powered by', 'server-status-for-mc-by-mrdino' ) .
+                			' <a href="https://mrdino.es" target="_blank" rel="noopener">Server Status for MC by MrDino</a>'
+                		);
+                		?>
+                	</div>
+                <?php endif; ?>
 			</div>
 			<?php
 			return ob_get_clean();
@@ -247,51 +250,54 @@ class MCSMD_Players_List {
 		}
 
 		// --- NO HAY JUGADORES ONLINE -----------------------------------------
-		if ( empty( $list ) ) {
+        if ( empty( $list ) ) {
 
-			ob_start();
-			?>
-			<div class="<?php echo esc_attr( implode( ' ', $card_classes ) ); ?>"
-			     data-mcsmd-card="players">
+        	ob_start();
+        	?>
+        	<div class="<?php echo esc_attr( implode( ' ', $card_classes ) ); ?>"
+        	     data-mcsmd-card="players">
 
-				<div class="mcsmd-players-title">
-                    <?php
-                    printf(
-                        /* translators: %d: number of online players. */
-                        esc_html__( 'Online Players (%d)', 'mcsmd' ),
-                        0
-                    );
-                    ?>
-                </div>
+        		<div class="mcsmd-players-header">
+        			<div class="mcsmd-players-title">
+        				<?php
+        				printf(
+        					/* translators: %d: number of online players. */
+        					esc_html__( 'Online Players (%d)', 'server-status-for-mc-by-mrdino' ),
+        					0
+        				);
+        				?>
+        			</div>
 
+        			<button
+        				type="button"
+        				class="mcsmd-refresh-title"
+        				data-mcsmd-refresh="players"
+        				title="<?php esc_attr_e( 'Refresh players', 'server-status-for-mc-by-mrdino' ); ?>"
+        			>
+        				⟳
+        			</button>
+        		</div>
 
-					<button
-						type="button"
-						class="mcsmd-refresh-title"
-						data-mcsmd-refresh="players"
-						title="<?php esc_attr_e( 'Refresh players', 'mcsmd' ); ?>"
-					>
-						⟳
-					</button>
-				</div>
+        		<div class="mcsmd-empty-msg">
+        			<span class="status-dot-green"></span>
+        			<?php esc_html_e( 'No players online right now.', 'server-status-for-mc-by-mrdino' ); ?>
+        		</div>
 
-				<div class="mcsmd-empty-msg">
-					<span class="status-dot-green"></span>
-					<?php esc_html_e( 'No players online right now.', 'mcsmd' ); ?>
-				</div>
+        		<?php if ( ! empty( $settings['show_credit'] ) ) : ?>
+        			<div class="mcsmd-footer">
+        				<?php
+        				echo wp_kses_post(
+        					esc_html__( 'Powered by', 'server-status-for-mc-by-mrdino' ) .
+        					' <a href="https://mrdino.es" target="_blank" rel="noopener">Server Status for MC by MrDino</a>'
+        				);
+        				?>
+        			</div>
+        		<?php endif; ?>
 
-				<div class="mcsmd-footer">
-					<?php
-					echo wp_kses_post(
-						esc_html__( 'Powered by', 'mcsmd' ) .
-						' <a href="https://mrdino.es" target="_blank" rel="noopener">Server Status for MC by MrDino</a>'
-					);
-					?>
-				</div>
-			</div>
-			<?php
-			return ob_get_clean();
-		}
+        	</div>
+        	<?php
+        	return ob_get_clean();
+        }
 		// ---------------------------------------------------------------------
 
 		// ID único para JS (por si hay varios shortcodes en la misma página)
@@ -308,7 +314,7 @@ class MCSMD_Players_List {
                     <?php
                     printf(
                         /* translators: %d: number of online players. */
-                        esc_html__( 'Online Players (%d)', 'mcsmd' ),
+                        esc_html__( 'Online Players (%d)', 'server-status-for-mc-by-mrdino' ),
                         count( $list )
                     );
                     ?>
@@ -318,7 +324,7 @@ class MCSMD_Players_List {
 					type="button"
 					class="mcsmd-refresh-title"
 					data-mcsmd-refresh="players"
-					title="<?php esc_attr_e( 'Refresh players', 'mcsmd' ); ?>"
+					title="<?php esc_attr_e( 'Refresh players', 'server-status-for-mc-by-mrdino' ); ?>"
 				>
 					⟳
 				</button>
@@ -328,12 +334,12 @@ class MCSMD_Players_List {
 				<input
 					type="text"
 					class="mcsmd-player-search-input"
-					placeholder="<?php esc_attr_e( 'Search player...', 'mcsmd' ); ?>"
+					placeholder="<?php esc_attr_e( 'Search player...', 'server-status-for-mc-by-mrdino' ); ?>"
 				/>
 
 				<select class="mcsmd-player-sort">
-					<option value="name_az"><?php esc_html_e( 'Name A → Z', 'mcsmd' ); ?></option>
-					<option value="name_za"><?php esc_html_e( 'Name Z → A', 'mcsmd' ); ?></option>
+					<option value="name_az"><?php esc_html_e( 'Name A → Z', 'server-status-for-mc-by-mrdino' ); ?></option>
+					<option value="name_za"><?php esc_html_e( 'Name Z → A', 'server-status-for-mc-by-mrdino' ); ?></option>
 				</select>
 			</div>
 
@@ -350,14 +356,16 @@ class MCSMD_Players_List {
 				<?php endforeach; ?>
 			</div>
 
-			<div class="mcsmd-footer">
-				<?php
-				echo wp_kses_post(
-					esc_html__( 'Powered by', 'mcsmd' ) .
-					' <a href="https://mrdino.es" target="_blank" rel="noopener">Server Status for MC by MrDino</a>'
-				);
-				?>
-			</div>
+			<?php if ( ! empty( $settings['show_credit'] ) ) : ?>
+            	<div class="mcsmd-footer">
+            		<?php
+            		echo wp_kses_post(
+            			esc_html__( 'Powered by', 'server-status-for-mc-by-mrdino' ) .
+            			' <a href="https://mrdino.es" target="_blank" rel="noopener">Server Status for MC by MrDino</a>'
+            		);
+            		?>
+            	</div>
+            <?php endif; ?>
 		</div>
 
 		<script>

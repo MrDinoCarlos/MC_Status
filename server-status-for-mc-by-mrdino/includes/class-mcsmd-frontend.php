@@ -46,6 +46,7 @@ class MCSMD_Frontend {
             'last_icon'         => '',
             'last_motd_html'    => '',
             'last_motd_clean'   => '',
+            'show_credit'       => 0,
         );
 
         $options = get_option( $this->option_name, array() );
@@ -253,7 +254,7 @@ class MCSMD_Frontend {
 
 		if ( empty( $settings['server_address'] ) ) {
 			return '<div class="mcsmd-card"><p>' .
-				esc_html__( 'Please configure your Minecraft server address in the MC Status settings page.', 'mcsmd' ) .
+				esc_html__( 'Please configure your Minecraft server address in the MC Status settings page.', 'server-status-for-mc-by-mrdino' ) .
 				'</p></div>';
 		}
 
@@ -468,9 +469,9 @@ class MCSMD_Frontend {
 		}
 
 		if ( null !== $ping ) {
-			$ping_title = esc_html__( 'Ping:', 'mcsmd' ) . ' ' . intval( $ping ) . ' ms';
+			$ping_title = esc_html__( 'Ping:', 'server-status-for-mc-by-mrdino' ) . ' ' . intval( $ping ) . ' ms';
 		} else {
-			$ping_title = esc_html__( 'Ping not available', 'mcsmd' );
+			$ping_title = esc_html__( 'Ping not available', 'server-status-for-mc-by-mrdino' );
 		}
 
 		$player_count_mode = isset( $settings['player_count_mode'] ) ? $settings['player_count_mode'] : 'online_max';
@@ -506,7 +507,7 @@ class MCSMD_Frontend {
 
 						<?php if ( $version ) : ?>
 							<div class="mcsmd-version">
-								<?php esc_html_e( 'Version:', 'mcsmd' ); ?>
+								<?php esc_html_e( 'Version:', 'server-status-for-mc-by-mrdino' ); ?>
 								<?php echo ' ' . esc_html( $version ); ?>
 							</div>
 						<?php endif; ?>
@@ -517,25 +518,25 @@ class MCSMD_Frontend {
                                 if ( 'online_only' === $player_count_mode || $players_max <= 0 ) {
 
                                     // Solo jugadores online: "Online Players: 314"
-                                    esc_html_e( 'Online Players:', 'mcsmd' );
+                                    esc_html_e( 'Online Players:', 'server-status-for-mc-by-mrdino' );
                                     echo ' ' . intval( $players_online );
 
                                 } elseif ( 'online_percent' === $player_count_mode && $players_max > 0 && null !== $percent_full ) {
 
                                     // Online + porcentaje: "Online Players: 314 (63%)"
-                                    esc_html_e( 'Online Players:', 'mcsmd' );
+                                    esc_html_e( 'Online Players:', 'server-status-for-mc-by-mrdino' );
                                     echo ' ' . intval( $players_online );
                                     echo ' <span class="mcsmd-players-percent ' . esc_attr( $percent_class ) . '">(' . intval( $percent_full ) . '%)</span>';
 
                                 } else {
 
                                     // Modo por defecto: "Players: 314/500"
-                                    esc_html_e( 'Players:', 'mcsmd' );
+                                    esc_html_e( 'Players:', 'server-status-for-mc-by-mrdino' );
                                     echo ' ' . intval( $players_online ) . '/' . intval( $players_max );
                                 }
                                 ?>
                             <?php else : ?>
-                                <span class="offline-text"><?php esc_html_e( 'Server offline', 'mcsmd' ); ?></span>
+                                <span class="offline-text"><?php esc_html_e( 'Server offline', 'server-status-for-mc-by-mrdino' ); ?></span>
                             <?php endif; ?>
                         </div>
 					</div>
@@ -546,13 +547,13 @@ class MCSMD_Frontend {
 					<button class="mcsmd-refresh"
 							type="button"
 							data-mcsmd-refresh="status"
-							aria-label="<?php esc_attr_e( 'Refresh status', 'mcsmd' ); ?>"
-							title="<?php esc_attr_e( 'Refresh status', 'mcsmd' ); ?>"></button>
+							aria-label="<?php esc_attr_e( 'Refresh status', 'server-status-for-mc-by-mrdino' ); ?>"
+							title="<?php esc_attr_e( 'Refresh status', 'server-status-for-mc-by-mrdino' ); ?>"></button>
 
 					<div class="mcsmd-status <?php echo $online ? 'on' : 'off'; ?>"
 						 title="<?php echo esc_attr( $ping_title ); ?>">
 						<span class="dot"></span>
-						<span class="label"><?php echo $online ? esc_html__( 'ONLINE', 'mcsmd' ) : esc_html__( 'OFFLINE', 'mcsmd' ); ?></span>
+						<span class="label"><?php echo $online ? esc_html__( 'ONLINE', 'server-status-for-mc-by-mrdino' ) : esc_html__( 'OFFLINE', 'server-status-for-mc-by-mrdino' ); ?></span>
 					</div>
 
 				</div>
@@ -597,22 +598,23 @@ class MCSMD_Frontend {
 						<?php endforeach; ?>
 
 						<?php if ( $extra > 0 ) : ?>
-							<div class="extra">+<?php echo intval( $extra ); ?> <?php esc_html_e( 'more', 'mcsmd' ); ?></div>
+							<div class="extra">+<?php echo intval( $extra ); ?> <?php esc_html_e( 'more', 'server-status-for-mc-by-mrdino' ); ?></div>
 						<?php endif; ?>
 
 					</div>
 				<?php endif; ?>
 			</div>
 
-			<div class="mcsmd-footer">
-				<?php
-				echo wp_kses_post(
-                	esc_html__( 'Powered by', 'mcsmd' ) .
-                	' <a href="https://mrdino.es" target="_blank" rel="noopener">Server Status for MC by MrDino</a>'
-                );
-				?>
-			</div>
-
+			<?php if ( ! empty( $settings['show_credit'] ) ) : ?>
+            	<div class="mcsmd-footer">
+            		<?php
+            		echo wp_kses_post(
+            			esc_html__( 'Powered by', 'server-status-for-mc-by-mrdino' ) .
+            			' <a href="https://mrdino.es" target="_blank" rel="noopener">Server Status for MC by MrDino</a>'
+            		);
+            		?>
+            	</div>
+            <?php endif; ?>
 		</div>
 		<?php
 
