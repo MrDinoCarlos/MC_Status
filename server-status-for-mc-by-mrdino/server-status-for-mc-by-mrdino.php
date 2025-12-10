@@ -3,7 +3,7 @@
  * Plugin Name:       Server Status for MC by MrDino
  * Plugin URI:        https://mrdino.es/mcsmd
  * Description:       Display your Minecraft server status on your WordPress site. Basic mode works without any Minecraft plugin.
- * Version:           0.0.5
+ * Version:           0.0.6
  * Author:            MrDino
  * Author URI:        https://mrdino.es
  * License:           GPLv2 or later

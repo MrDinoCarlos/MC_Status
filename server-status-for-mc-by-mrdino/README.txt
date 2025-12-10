@@ -3,9 +3,9 @@ Contributors: mrdinocarlos
 Donate link: https://buymeacoffee.com/mrdino
 Tags: minecraft, server, status
 Requires at least: 6.0
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 0.0.5
+Stable tag: 0.0.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,6 +30,16 @@ Enter your Minecraft server address and port in the “Basic server settings” 
 Optionally adjust the display options (banner, MOTD, dark mode, player list, etc.).
 Create or edit a page, paste the shortcode you want to use and publish the page.
 Tip: the status and players cards auto-refresh in the background, so visitors will see updated information without reloading the whole page.
+
+== Screenshots ==
+1. Admin Menu 1
+2. Admin Menu 2
+3. How to Use + ShortCodes
+4. Full Online Dark Version - no players
+5. Full Online White Version - no players
+6. Full Online Dark Version - with players
+7. Full Online White Version - with players
+8. Full Offline White Version
 
 == External services ==
 
@@ -58,12 +68,8 @@ This service is used to generate square avatar images ("heads") for Minecraft pl
 
 == Changelog ==
 
-= 0.0.5 =
+= 0.0.6 =
 
-Added a new opt-in setting “Show credit link” allowing site owners to optionally display a small attribution link in the status cards.
-Fixed all frontend credit/powered-by links that were previously displayed without user consent.
-Fixed both status card and players list to display the credit only when the new option is explicitly enabled.
-Fixed full compliance with WordPress.org guidelines regarding attribution and front-facing links.
-Changed the settings page to include the new credit toggle under Display options (disabled by default).
+Tested for WordPress Version 6.9
 
 
